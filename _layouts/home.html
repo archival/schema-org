@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  {{ content }}
+
+  <h1>Examples</h1>
+    {% assign examples_by_source = site.examples | group_by: "source" %}
+    {% for source in examples_by_source %}
+    <h2>{{ source.name }}</h2>
+    <ul>
+      {% for post in source.items %}
+      <li>
+          <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </ul>
+</div>

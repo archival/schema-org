@@ -1,0 +1,53 @@
+# Welcome to Jekyll!
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: Archives and Linked Data
+# togemail: your-email@example.com
+description: > # this means to ignore newlines until "baseurl:"
+  Schema.org and Schema Architypes for linked archival description
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+# twitter_username: jekyllrb
+github_username:  archival
+
+# Build settings
+markdown: kramdown
+theme: minima
+# We're not using Jekyll for a blogm
+# plugins:
+#   - jekyll-feed
+
+# Configure the collection of examples
+collections:
+  examples:
+    output: true
+    permalink: /:collection/:path/index.html
+
+defaults:
+- scope:
+    path: ""
+    type: examples
+  values:
+    layout: schema-org-example
+    permalink: /:collection/:path.html
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - build.sh
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

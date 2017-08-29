@@ -1,0 +1,18 @@
+---
+title: Thomas Moore
+source: Rice University
+---
+{
+  "@context": "http://schema.org/",
+  "@type": "Person",
+  "name": "Thomas Moore",
+  "givenName": "Thomas",
+  "familyName": "Moore",
+  "birthDate": "1779",
+  "deathDate": "1852",
+  "alternateName": [
+    "Anacreon Moore",
+    "Thomas‏ Brown the younger"
+  ],
+  "description": "Thomas Moore (28 May 1779 – 25 February 1852) was an Irish poet, singer, songwriter, and entertainer, now best remembered for the lyrics of The Minstrel Boy and The Last Rose of Summer. He was responsible, with John Murray, for burning Lord Byron's memoirs after his death. In his lifetime he was often referred to as Anacreon Moore."
+}

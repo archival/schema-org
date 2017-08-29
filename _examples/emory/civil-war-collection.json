@@ -1,0 +1,33 @@
+---
+title: Civil War collection
+source: Emory University
+---
+{
+  "@context": "http://schema.org/",
+  "@id": "https://findingaids.library.emory.edu/documents/civilwar20/",
+  "@type": "ArchiveCollection",
+  "about": [
+    "http://id.loc.gov/authorities/names/n50057060",
+    "http://id.loc.gov/authorities/subjects/sh93000143"
+  ],
+  "accessAndUse": [
+    "Unrestricted access.",
+    "All requests subject to limitations noted in departmental policies on reproduction."
+  ],
+  "archive": {
+    "@id": "http://id.loc.gov/authorities/names/no2015136078",
+    "@type": "LocalBusiness",
+    "address": "232 Asbury Drive, Atlanta, Georgia 30032",
+    "name": "Stuart A. Rose Manuscript, Archives, and Rare Book Library",
+    "telephone": "404-727-6887",
+    "url": "http://rose.library.emory.edu/"
+  },
+  "creator": "http://id.loc.gov/authorities/names/no2015136078",
+  "dateCreated": "1977/2017",
+  "description": "The Civil War miscellany collection is an artificial collection consisting of both contemporary and non-contemporary materials relating to the American Civil War (1861-1865). The collection is divided into three series: Confederate miscellany, Union miscellany and Civil War printed material. The Confederate series contains both contemporary and non-contemporary civil war documents, ephemera, currency and stocks and bonds; and photographs. The contemporary Civil War-era documents consist primarily of soldiers' letters; letters and papers of Confederate leaders, both civilian and military; and other official documents. The Union series contains documents, memorabilia, and photographs. The documents consist of correspondence written by or about soldiers from the Union states, diaries, scrapbooks, military orders, regiment records, and other papers. Of particular interest are records from two African American regiments, the 2nd Kansas Colored Infantry Regiment and the 38th United States Colored Infantry Regiment, which document African American participation in the Civil War. The series also contains non-contemporary materials which relate to the Civil War, but were created after the war. These include materials created by or about former Confederate (military or civilian), materials relating to the United Confederate Veterans affairs, or about or pertaining to the Confederacy, written after the Civil War. Union memorabilia includes a metal Union insignia, 98 Federal envelopes depicting a variety of images, and cards advertising the services of H.F. Bungardt, a pension attorney. The photographs and prints mainly contain images of various Union officers. The printed material series includes engravings and lithographs relating to the Civil War.",
+  "genre": "http://vocab.getty.edu/aat/300027828",
+  "identifier": "Manuscript Collection No. 20",
+  "inLanguage": "EN",
+  "name": "Civil War collection",
+  "temporalCoverage": "1860/1865"
+}

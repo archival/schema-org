@@ -1,0 +1,44 @@
+---
+title: Houston Folk Music collection
+source: Rice University
+---
+{
+  "@context": "http://schema.org/",
+  "@type": "ArchiveCollection",
+  "name": "Houston Folk Music collection",
+  "itemLocation": "http://archives.library.rice.edu/repositories/2/resources/1038",
+  "inLanguage": "EN",
+  "creator": [
+    {
+      "@type": "person",
+      "name": "Townes Van Zandt",
+      "@id": "http://viaf.org/viaf/56876870"
+    },
+    {
+      "@type": "person",
+      "name": "Guy Clark",
+      "@id": "http://viaf.org/viaf/29717590"
+    },
+    {
+      "@type": "person",
+      "name": "Vince Bell",
+      "@id": "http://viaf.org/viaf/78141250"
+    },
+    {
+      "@type": "person",
+      "name": "Lyle Lovett",
+      "@id": "http://viaf.org/viaf/120632356"
+    }
+  ],
+  "description": [
+    "This collection contains items documenting the Houston Folk music scene from the 1970s-1980s.",
+    "This collection contains items documenting the Houston Folk music scene from the 1970s-1980s. More specifically, it has smaller donations of albums, fliers, and photographs.",
+    "During the 1960s-1980s, Houston, TX had a vibrant folk scene. Local musicians and those from other parts of Texas and the U.S. socialized and played at a variety of music establishments around the city, including Anderson Fair Retail Restaurant, Sand Mountain Coffeehouse, Liberty Hall, The Old Quarter, Theodore's and Corky's. This scene spawned many musicians, Townes Van Zandt, Guy Clark, Robert Earl Keen, Nanci Griffith, Lynn Langham, Wrecks Bell, Eric Taylor, John Vandiver, Danny Everitt, Vince Bell, Richard Dobson, Don Sanders, Wheatfield/St. Elmo's Fire, Dogtooth Violet, Bill Cade, Lyle Lovett, and many more."
+  ],
+  "dateCreated": "1975-1985",
+  "accessAndUse": [
+    "This material is open for research.",
+    "Permission to publish from this material must be obtained from the specific copyright owner."
+  ],
+  "ownershipInfo": "Albums donated by Brendan Doss, III. Townes Van Zandt reel donated by Craig Calvert."
+}

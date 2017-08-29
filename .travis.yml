@@ -1,0 +1,9 @@
+language: ruby
+cache: bundler
+rvm:
+- 2.4.1
+
+script: ./build.sh
+
+notifications:
+  email: false

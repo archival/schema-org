@@ -1,0 +1,30 @@
+---
+title: United Nations Commission for India and Pakistan plebiscite subject files
+source: United Nations
+---
+{
+  "@context": "http://schema.org/",
+  "@id": "https://search.archives.un.org/subject-files-0204-116",
+  "@type": "ArchiveCollection",
+  "identifier": "S-0692",
+  "accessAndUse": "No restrictions on access",
+  "creator": {
+    "@id": "https://search.archives.un.org/united-nations-commission-for-india-and-pakistan",
+    "@type": "Organization",
+    "alternateName": "United Nations India-Pakistan Observation Commission",
+    "description": "The United Nations Commission for India and Pakistan's (UNCIP) task was to investigate and mediate the India/Pakistan dispute over the future of the state of Jammu and Kashmir. It existed from June, 1948, until March, 1958. The United Nations Representative for India and Pakistan was Sir Owen Dixon. His task was to assume the responsibilities of UNCIP, to prepare for the Plebiscite Administrator for Jammu and Kashmir, and to assist in preparation for and supervision of demilitarization.",
+    "dissolutionDate": "1958-03-15",
+    "foundingDate": "1948-06-01",
+    "legalName": "United Nations Commission for India and Pakistan",
+    "parentOrganization": {
+      "@id": "https://search.archives.un.org/united-nations-OSPA",
+      "@type": "Organization",
+      "legalName": "United Nations Office for Special Political Affairs"
+    }
+  },
+  "dateCreated": "July 1948 to November 1950",
+  "description": "Series Includes correspondence and memoranda concerning plans for the plebiscite, the government of Kashmir, minorities in India and Pakistan, refugees in Kashmir, and other matters concerning the situation in Jammu and Kashmir, and the operation - plebiscite.",
+  "endDate": "1950-11-24",
+  "name": "Plebiscite subject files",
+  "startDate": "1948-07-03"
+}
