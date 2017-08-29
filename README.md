@@ -11,13 +11,15 @@ The HTML version of the site is built using [Jekyll](http://jekyllrb.com/).
 Examples should be added as JSON-LD Schema.org expressions as a new file in the
 `_examples` directory. Each source has its own subdirectory. Each file should also
 have [YAML Front Matter](https://jekyllrb.com/docs/frontmatter/) at the top, with
-values for `title` and `source`. Here's an example of a sample collection for
+values for `title`, `source` (institution or project), and `description` (what the
+example is intended to illustrate). Here's an example of a sample collection for
 a given institution, which we'd save as `_examples/given/sample.json`:
 
 ```json
 ---
 title: Sample collection
 source: Given institution
+description: An example of how to provide an example
 ---
 {
   "@context": "http://schema.org",
