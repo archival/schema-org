@@ -4,9 +4,15 @@ source: United Nations
 ---
 {
   "@context": "http://schema.org/",
-  "@id": "https://search.archives.un.org/subject-files-0204-116",
-  "@type": "ArchiveCollection",
+  "@id": "https://search.archives.un.org/subject-files-united-nations-plebiscite-administrator-for-jammu-and-kashmir",
+  "url": "https://search.archives.un.org/subject-files-united-nations-plebiscite-administrator-for-jammu-and-kashmir",
+  "@type": ["Collection", "ArchiveComponent"],
   "identifier": "S-0692",
+  "holdingArchive": {
+    "name": "United Nations Archives",
+    "url": "https://archives.un.org/",
+    "email": "arms@un.org"
+  },
   "accessAndUse": "No restrictions on access",
   "creator": {
     "@id": "https://search.archives.un.org/united-nations-commission-for-india-and-pakistan",
@@ -21,6 +27,11 @@ source: United Nations
       "@type": "Organization",
       "legalName": "United Nations Office for Special Political Affairs"
     }
+  },
+  "isPartOf": {
+    "@type": ["Collection", "ArchiveComponent"],
+    "url": "https://search.archives.un.org/united-nations-commission-for-india-and-pakistan-uncip-1948-1950",
+    "name": "United Nations Commission for India and Pakistan (UNCIP) fonds (1948-1950)"
   },
   "dateCreated": "July 1948 to November 1950",
   "description": "Series Includes correspondence and memoranda concerning plans for the plebiscite, the government of Kashmir, minorities in India and Pakistan, refugees in Kashmir, and other matters concerning the situation in Jammu and Kashmir, and the operation - plebiscite.",
