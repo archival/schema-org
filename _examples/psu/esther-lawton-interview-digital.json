@@ -1,0 +1,17 @@
+---
+title: Esther Lawton: oral history Digital Object
+source: Pennsylvania State University
+description: Goal of modeling a digital object which has an archival analog component as well. This record is for an oral history interview digitized from an audiocassette that's a part of a larger collection. I used both isPartOf to relate it to the collection record and isBasedOn to relate it to the record for the analog object. For the analog object, I used the finding aid URI as standin for item-level analog URI. See also model for the analog form at esther-lawton-interview-cassette.json
+---
+{
+"@context" : "http://schema.org",
+"@id" : "https://collection1.libraries.psu.edu/cdm/singleitem/collection/afgw/id/4/rec/9",
+"@type" : ["ArchiveComponent", "AudioObject"],
+"encodingFormat" : "audio/mp3",
+"name" : "Esther Lawton: oral history",
+"alternateName" : "Lawton, Esther oral history interview",
+"isBasedOn" : "http://libraries.psu.edu/findingaids/1.htm#aspace_SC_PSUA_1_8bef2e30129d8728283278704db103d6",
+"isPartOf" : "https://libraries.psu.edu/findingaids/1.htm",
+"language" : "http://id.loc.gov/vocabulary/languages/eng",
+"holdingArchive" : "http://libraries.psu.edu/specialcollections"
+}

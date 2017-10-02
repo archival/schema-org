@@ -1,0 +1,20 @@
+---
+title: Esther Lawton: oral history cassette
+source: Pennsylvania State University
+description: Goal of modeling an analog component which has a digitized form as well. This record is for an oral history interview on an audiocassette that's part of a larger collection. Using RDA here to choose the word audiocassette. I used the finding aid URI as standin for item-level analog URI. I wondered about adding a playerType property but eventually decided against it because it's not in our description. See also a modeling of the digital object as esther-lawton-interview-digital.json.
+---
+{
+"@context" : "http://schema.org",
+"@id" : "http://libraries.psu.edu/findingaids/1.htm#aspace_SC_PSUA_1_8bef2e30129d8728283278704db103d6",
+"@type" : ["ArchiveComponent", "AudioObject"],
+"name" : "Esther Lawton: oral history",
+"materialExtent" : {
+  "@type" : "QuantitativeValue",
+  "unitText" : "audiocassette",
+  "value" : "1"
+},
+"alternateName" : "Lawton, Esther oral history interview",
+"isPartOf" : "https://lib2raries.psu.edu/findingaids/1.htm",
+"language" : "http://id.loc.gov/vocabulary/languages/eng",
+"holdingArchive" : "http://libraries.psu.edu/specialcollections"
+}

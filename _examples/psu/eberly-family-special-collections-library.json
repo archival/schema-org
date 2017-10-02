@@ -1,0 +1,34 @@
+---
+title: Eberly Family Special Collections Library
+source: Pennsylvania State University
+description: Modeling our special collections library as an Archive that falls administratively within a Library. Was unsure whether to use the URL both id and url. Used openingHours and noticed that openingHoursSpecification also exists, but seems used less. Was also unsure whether the entity could be simultaneously a Library and Archive, since it's a Special Collections Library and houses rare book collection as well as archival materials. What does that look like?
+---
+{
+  "@context" : "http://schema.org",
+  "@id" : "http://libraries.psu.edu/specialcollections",
+  "@type" : "Archive",
+  "legalName" : "Eberly Family Special Collections Library",
+  "identifier" : "PSt",
+  "parentOrganization" : {
+    "@type" : "Library",
+    "name" : "Pennsylvania State University Libraries",
+    "url" : "http://libraries.psu.edu"
+  },
+  "url" : "http://libraries.psu.edu/specialcollections",
+  "address" : {
+    "@type" : "PostalAddress",
+    "streetAddress" : "104 Paterno Library",
+    "addressLocality" : "University Park",
+    "addressRegion" : "PA",
+    "postalCode" : "16852"
+
+  },
+  "geo" : {
+    "@type" : "GeoCoordinates",
+    "latitude" : "40.798149",
+    "longitude" : "-77.865504"
+  },
+  "description" : "The Eberly Family Special Collections Library at Penn State - University Park is home to more than 200,000 printed volumes, more than 25 million archival records and manuscripts, and another million photographs, maps, prints, and audio-visual items. We offer primary source materials for a diverse community of researchers, who range from K-12 and Penn State students, as well as scholars around the world.  We collect in a variety of subject disciplines, a sampling of which includes Utopian literature, science fiction, labor organization and representation, local Centre County history, and we are also home to the Penn State University Archives.",
+  "openingHours" : ["Mo-Fr 09:00-17:00", "Su 13:00-17:00"],
+  "email" : "UL-spcolref@lists.psu.edu"
+}
