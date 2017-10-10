@@ -1,7 +1,7 @@
 ---
 title: Esther Lawton: oral history cassette
 source: Pennsylvania State University
-description: Goal of modeling an analog component which has a digitized form as well. There doesn't appear to be any kind of property for derivations, or at least I couldn't find one. This record is for an oral history interview on an audiocassette that's part of a larger collection. Using RDA here to choose the word audiocassette. I used the finding aid URI as standin for item-level analog URI. I wondered about adding a playerType property but eventually decided against it because it's not in our description. See also a modeling of the digital object as esther-lawton-interview-digital.json.
+description: Goal of modeling an analog component which has a digitized form as well. There doesn't appear to be any kind of property for derivations, or at least I couldn't find one. This record is for an oral history interview on an audiocassette that's part of a larger collection. Using RDA here as source of term audiocassette. I used the finding aid URI as standin for item-level analog URI. I wondered about adding a playerType property but eventually decided against it because it's not in our description. See also a modeling of the digital object as esther-lawton-interview-digital.json.
 ---
 {
 "@context" : "http://schema.org",
