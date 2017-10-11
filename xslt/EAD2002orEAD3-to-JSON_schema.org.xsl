@@ -40,7 +40,7 @@
     <xsl:param name="jeckyll-description"/>
     
     <xsl:variable name="collection-ID" select="ead:ead/ead:eadheader/ead:eadid, ead3:ead/ead3:control/ead3:recordid"/>
-    <xsl:variable name="collection-ID-text" select="ead:ead/ead:eadheader/ead:eadid/normalize-space(), ead3:ead/ead3:control/ead3:recordid/normalize-space()"/>
+    <xsl:variable name="collection-ID-text" select="$collection-ID/normalize-space(), $collection-ID/normalize-space()"/>
     <xsl:variable name="collection-URL" select="$collection-ID/@url/normalize-space(), $collection-ID/@instanceurl/normalize-space()"/>
     <xsl:variable name="repository-name" select="ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher[1]/normalize-space(), ead3:ead/ead3:control/ead3:filedesc/ead3:publicationstmt/ead3:publisher[1]/normalize-space()"/>
 
