@@ -16,7 +16,7 @@
     
     <!-- to do:
         a lot!
-        so far, just the generic framework is provided (but not to continue to make sure ead3 files can work  w/o any other changes).
+        so far, just the generic framework is provided (but need to continue to make sure ead3 files can work  w/o any other changes).
         also need to make the first attempt at adding:
             dates
             extents
@@ -24,7 +24,7 @@
             isPartOf
             etc.
             
-        to have useful links and the link, the ASpace EAD exporter would need to be updated.
+        to have useful links and the like, the ASpace EAD exporter would need to be updated.
         but a few things those could be mapped here (e.g. eng -> http://id.loc.gov/vocabulary/languages/eng), as well.
     -->
     
@@ -32,8 +32,8 @@
     <xsl:param name="output-directory">
         <xsl:value-of select="concat('json-', $collection-ID-text, '/')"/>
     </xsl:param>
-    <!-- change this to true to create one json file for each archival component;
-        when set to false, each EAD file just produces a single json file for the archdesc level description-->
+    <!-- change this to true to create one json file for each archival component, including the archdesc;
+        when set to false, each EAD file produces a single json file for the archdesc-->
     <xsl:param name="include-dsc-in-transformation" select="false()"/>
     <xsl:param name="jeckyll-title"/>
     <xsl:param name="jeckyll-source"/>
@@ -89,7 +89,7 @@
             <xsl:sequence select="$xml => xml-to-json() => parse-json() => serialize(map{'method':'json', 'indent': true(), 'use-character-maps': map{'\': ''}})"/>
             
             <!-- when the include-dsc-in-transformation value is set to true, then all of the component templates will be processed by this same template recursively.
-            by default this is turned off for testing purposes.
+            by default this is turned off for testing purposes
             -->
             <xsl:if test="$include-dsc-in-transformation eq true()">
                 <xsl:apply-templates select="ead:dsc/ead:*[ead:did][not(@audience='internal')] | ead3:dsc/ead3:*[ead3:did][not(@audience='internal')]"/>
@@ -100,7 +100,7 @@
 
 
     <!-- here's where we combine the jeckyll text info before the json document
-            (the funky whitespace is important within this template, so keep as is)-->
+            (the funky whitespace is important within this template for formatting reasons, so keep as is)-->
     <xsl:template name="create-preceding-text-for-jeckyll">
         <xsl:param name="component-name"/>
         <xsl:param name="archdesc-level"/>---
@@ -276,7 +276,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
     </xsl:template>
     
     
-<!-- another section to document (but so far i don't have/need much here) -->
+<!-- another section to document (but so far i don't have/need much here; could be need to add an 'array' or other generic mode types, though) -->
     
     <xsl:template match="ead:*" mode="string">
         <j:string>
