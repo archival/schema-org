@@ -25,7 +25,7 @@
             etc.
             
         to have useful links and the like, the ASpace EAD exporter would need to be updated.
-        but a few things those could be mapped here (e.g. eng -> http://id.loc.gov/vocabulary/languages/eng), as well.
+        but a few of those things could be mapped here (e.g. eng -> http://id.loc.gov/vocabulary/languages/eng), as well.
     -->
     
     <!-- 1) global parameters and variables -->
