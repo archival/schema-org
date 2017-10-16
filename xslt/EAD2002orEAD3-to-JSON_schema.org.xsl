@@ -16,11 +16,14 @@
     
     <!-- to do:
         a lot!
-        so far, just the generic framework is provided (but need to continue to make sure ead3 files can work  w/o any other changes).
+        
+        so far, just the generic framework is provided 
+        (but need to continue to make sure ead3 files can work w/o any other changes / right now, i'm focusing on EAD2002).
+        
         also need to make the first attempt at adding:
-            dates
+            start and end dates
             extents
-            @authfileid
+            @authfilenumber (when it starts with http)
             isPartOf
             etc.
             
@@ -35,6 +38,7 @@
     <!-- change this to true to create one json file for each archival component, including the archdesc;
         when set to false, each EAD file produces a single json file for the archdesc-->
     <xsl:param name="include-dsc-in-transformation" select="false()"/>
+    <xsl:param name="include-jeckyll-in-output" select="true()"/>
     <xsl:param name="jeckyll-title"/>
     <xsl:param name="jeckyll-source"/>
     <xsl:param name="jeckyll-description"/>
@@ -42,6 +46,7 @@
     <xsl:variable name="collection-ID" select="ead:ead/ead:eadheader/ead:eadid, ead3:ead/ead3:control/ead3:recordid"/>
     <xsl:variable name="collection-ID-text" select="$collection-ID/normalize-space()"/>
     <xsl:variable name="collection-URL" select="$collection-ID/@url/normalize-space(), $collection-ID/@instanceurl/normalize-space()"/>
+    <!-- consider changing to archdesc/did/repository, since the corpname element could actually have an @authfilenumber attribute available there.  the publisher element, on the other hand, could only have an id attribute.-->
     <xsl:variable name="repository-name" select="ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher[1]/normalize-space(), ead3:ead/ead3:control/ead3:filedesc/ead3:publicationstmt/ead3:publisher[1]/normalize-space()"/>
 
     <!-- 2) primary template section -->
@@ -50,7 +55,7 @@
     </xsl:template>
 
     <!-- all components, including the archdesc, processed here -->
-    <xsl:template match="ead:archdesc | ead3:archdesc | ead:*[ead:did and ancestor::ead:dsc] | ead3:*[ead3:did and ancestor::ead3:dsc]">
+    <xsl:template match="*:archdesc | ead:*[ead:did and ancestor::ead:dsc] | ead3:*[ead3:did and ancestor::ead3:dsc]">
         <xsl:param name="archdesc-level" select="if (local-name() eq 'archdesc') then true() else false()"/>
         <xsl:variable name="component-ID" select="if (@id) 
             then $collection-ID-text || '-' || @id => normalize-space() => replace('aspace_', '')
@@ -70,12 +75,16 @@
         </xsl:variable>
         
         <xsl:result-document href="{$filename}">
-            <xsl:variable name="preceding-text">
-                <xsl:call-template name="create-preceding-text-for-jeckyll">
-                    <xsl:with-param name="archdesc-level" select="$archdesc-level"/>
-                    <xsl:with-param name="component-name" select="$component-name"/>
-                </xsl:call-template>
-            </xsl:variable>
+            <xsl:if test="$include-jeckyll-in-output eq true()">
+                <xsl:variable name="preceding-text">
+                    <xsl:call-template name="create-preceding-text-for-jeckyll">
+                        <xsl:with-param name="archdesc-level" select="$archdesc-level"/>
+                        <xsl:with-param name="component-name" select="$component-name"/>
+                    </xsl:call-template>
+                </xsl:variable>
+                <xsl:value-of select="$preceding-text"/>
+            </xsl:if>
+            
             <xsl:variable name="xml">
                 <xsl:call-template name="create-xml">
                     <xsl:with-param name="archdesc-level" select="$archdesc-level"/>
@@ -83,8 +92,6 @@
                     <xsl:with-param name="component-ID" select="$component-ID"/>
                 </xsl:call-template>
             </xsl:variable>
-            
-            <xsl:value-of select="$preceding-text"/>
             
             <xsl:sequence select="$xml => xml-to-json() => parse-json() => serialize(map{'method':'json', 'indent': true(), 'use-character-maps': map{'\': ''}})"/>
             
@@ -96,8 +103,6 @@
             </xsl:if>
         </xsl:result-document>
     </xsl:template>
-
-
 
     <!-- here's where we combine the jeckyll text info before the json document
             (the funky whitespace is important within this template for formatting reasons, so keep as is)-->
@@ -112,7 +117,8 @@ description: <xsl:value-of select="$jeckyll-description"/>
 ---
 </xsl:template>
     
-    <!-- here's where we create the XML document in order to convert it to JSON -->
+    <!-- here's where we create the XML document in order to convert it to JSON.
+    will eventually shorten this template by adding others, most likely.-->
     <xsl:template name="create-xml">
         <xsl:param name="component-name"/>
         <xsl:param name="archdesc-level"/>
@@ -147,7 +153,6 @@ description: <xsl:value-of select="$jeckyll-description"/>
                         </j:string>
                     </xsl:otherwise>
                 </xsl:choose>
-                
                 <xsl:choose>
                     <xsl:when test="$component-name">
                         <j:string key="name">
@@ -158,7 +163,6 @@ description: <xsl:value-of select="$jeckyll-description"/>
                         <j:null key="name"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
                 <xsl:choose>
                     <xsl:when test="$EAD-unitid">
                         <j:string key="identifier">
@@ -169,28 +173,23 @@ description: <xsl:value-of select="$jeckyll-description"/>
                         <j:null key="identifier"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
                 <xsl:choose>
-                    <!-- to expand, see the following example:
-                        {
-    "@id": "http://id.loc.gov/authorities/names/no2015136078",
-    "@type": ["Archive", "LocalBusiness"],
-    "address": "232 Asbury Drive, Atlanta, Georgia 30032",
-    "name": "Stuart A. Rose Manuscript, Archives, and Rare Book Library",
-    "telephone": "404-727-6887",
-    "url": "http://rose.library.emory.edu/"
-  }
-                    -->
                     <xsl:when test="$repository-name">
-                        <j:string key="holdingArchive">
-                            <xsl:value-of select="$repository-name"/>
-                        </j:string>
+                        <j:map key="holdingArchive">
+                            <j:array key="@type">
+                                <j:string>Archive</j:string>
+                                <j:string>LocalBusiness</j:string>
+                            </j:array>
+                            <j:string key="name">
+                                <xsl:value-of select="$repository-name"/>
+                            </j:string>
+                            <!-- add id via authfilenumber after updating the repository-name variable -->
+                        </j:map>
                     </xsl:when>
                     <xsl:otherwise>
                         <j:null key="holdingArchive"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
                 <xsl:choose>
                     <xsl:when test="not(ead:scopecontent[normalize-space()]) and ead:abstract[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="description">
@@ -216,7 +215,6 @@ description: <xsl:value-of select="$jeckyll-description"/>
                         <j:null key="description"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
                 <xsl:choose>
                     <xsl:when test="ead:accessrestrict[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="accessConditions">
@@ -232,7 +230,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
                         <j:null key="accessConditions"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
+                <!-- update to map language codes to URIs-->
                 <xsl:choose>
                     <xsl:when test="ead:did/ead:langmaterial[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="language">
@@ -248,31 +246,75 @@ description: <xsl:value-of select="$jeckyll-description"/>
                         <j:null key="language"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
+                <!-- update the origination and controlaccess sections to use authfilenumber attribute-->
                 <xsl:if test="ead:did/ead:origination[not(@audience='internal')]">
                     <j:array key="creator">
                         <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')]" mode="string"/>
                     </j:array>
                 </xsl:if>
-                
                 <!-- only expects one control access section right now, although EAD can have more than that -->
                 <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]">
                        <j:array key="about">
                            <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]" mode="string"/>
                        </j:array>
                 </xsl:if>
-                
-                
                 <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]">
                     <j:array key="genre">
                         <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]" mode="string"/>
                     </j:array>
                 </xsl:if>
                 
+                <!-- dateCreated, first pass -->
+                <xsl:if test="ead:did/ead:unitdate[not(@type='bulk')]">
+                    <xsl:choose>
+                        <xsl:when test="ead:did/ead:unitdate[not(@type='bulk')][2]">
+                            <j:array key="dateCreated">
+                                <xsl:apply-templates select="ead:did/ead:unitdate[not(@type='bulk')]" mode="string"/>
+                            </j:array>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <j:string key="dateCreated">
+                                <xsl:apply-templates select="ead:did/ead:unitdate[not(@type='bulk')]"/>
+                            </j:string>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:if>
+                
+                <!-- for startDate and endDate, I'll need to create a function to find the value that should be used,
+                    since multiple inclusive date ranges might be use unitText and type when the info is properly encoded
+                -->
+                
+                <!-- extent, first pass.
+                    still need to add an option to use more precision
+                     e.g. 
+                
+                input (ead2002):  <extent unit="letters">14</extent>
+                
+                output:
+                 "materialExtent": {
+                    "@type": "QuantitativeValue",
+                    "unitText": "letters",
+                    "value": "14"
+                    }
+                -->
+                <xsl:if test="ead:did/ead:physdesc[not(ead:extent/@unit)]">
+                    <xsl:choose>
+                        <xsl:when test="ead:did/ead:physdesc[not(ead:extent/@unit)][2]">
+                            <j:array key="materialExtent">
+                                <xsl:apply-templates select="ead:did/ead:physdesc[not(ead:extent/@unit)]" mode="string"/>
+                            </j:array>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <j:string key="materialExtent">
+                                <xsl:apply-templates select="ead:did/ead:physdesc[not(ead:extent/@unit)]"/>
+                            </j:string>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:if>
+                
 
                 <!-- and go on like this for everything else -->
             </j:map>
-        
     </xsl:template>
     
     
@@ -282,6 +324,81 @@ description: <xsl:value-of select="$jeckyll-description"/>
         <j:string>
             <xsl:apply-templates/>
         </j:string>
+    </xsl:template>
+    
+    <!--optimized for what ASpace can output (up to 2 extents only).  If these templates are not used with AS-produced EAD, they
+    will definitely need to change!-->
+    <xsl:template match="ead:extent[1][matches(., '^\d')]">
+           <!--ASpace doesn't force the extent number to be a number, so we'll need to validate and test this on our own-->
+            <xsl:variable name="extent-number" select="number(substring-before(normalize-space(.), ' '))"/>
+            <xsl:variable name="extent-type" select="lower-case(substring-after(normalize-space(.), ' '))"/>
+            <xsl:value-of select="format-number($extent-number, '#,###')"/>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+                <!--changes feet to foot for singular extents-->
+                <xsl:when test="$extent-number eq 1 and contains($extent-type, ' feet')">
+                    <xsl:value-of select="replace($extent-type, ' feet', ' foot')"/>
+                </xsl:when>
+                <!--changes boxes to box for singular extents-->
+                <xsl:when test="$extent-number eq 1 and contains($extent-type, ' Boxes')">
+                    <xsl:value-of select="replace($extent-type, ' Boxes', ' Box')"/>
+                </xsl:when>
+                <!--changes works to work for the "Works of art" extent type, if this is used-->
+                <xsl:when test="$extent-number eq 1 and contains($extent-type, ' Works of art')">
+                    <xsl:value-of select="replace($extent-type, ' Works', ' Work')"/>
+                </xsl:when>
+                <!--chops off the trailing 's' for singular extents-->
+                <xsl:when test="$extent-number eq 1 and ends-with($extent-type, 's')">
+                    <xsl:variable name="sl" select="string-length($extent-type)"/>
+                    <xsl:value-of select="substring($extent-type, 1, $sl - 1)"/>
+                </xsl:when>
+                <!--chops off the trailing 's' for singular extents that are in AAT form, with a paranthetical qualifer-->
+                <xsl:when test="$extent-number eq 1 and ends-with($extent-type, ')')">
+                    <xsl:value-of select="replace($extent-type, 's \(', ' (')"/>
+                </xsl:when>
+                <!--any other irregular singluar/plural extent type names???-->
+                
+                <!--otherwise, just print out the childless text node as is-->
+                <xsl:otherwise>
+                    <xsl:value-of select="$extent-type"/>
+                </xsl:otherwise>
+                
+            </xsl:choose>
+            
+            <!--provide a separator before the next extent value, if present-->
+            <xsl:choose>
+                <!-- if there's a second extent, and that value starts with an open parenthesis character, then add a space-->
+                <xsl:when test="starts-with(following-sibling::ead:extent[1], '(')">
+                    <xsl:text> </xsl:text>
+                </xsl:when>
+                <!--otherwise, if there's a second extent value, add a comma and a space-->
+                <xsl:when test="following-sibling::ead:extent[1]">
+                    <xsl:text>, </xsl:text>
+                </xsl:when>
+            </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="ead:physfacet">
+            <xsl:choose>
+                <xsl:when test="preceding-sibling::ead:extent">
+                    <xsl:text> : </xsl:text>
+                    <xsl:apply-templates/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+    </xsl:template>
+    <xsl:template match="ead:dimensions">
+            <xsl:choose>
+                <xsl:when test="preceding-sibling::ead:extent | preceding-sibling::ead:physfacet">
+                    <xsl:text> ; </xsl:text>
+                    <xsl:apply-templates/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
     </xsl:template>
 
     <xsl:template match="ead:head">
