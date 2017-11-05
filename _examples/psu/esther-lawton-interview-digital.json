@@ -1,5 +1,5 @@
 ---
-title: Esther Lawton: oral history Digital Object
+title: "Esther Lawton: oral history digital object"
 source: Pennsylvania State University
 description: Goal of modeling a digital object which has an archival analog component as well. This record is for an oral history interview digitized from an audiocassette that's a part of a larger collection. I used both isPartOf to relate it to the collection record and isBasedOn to relate it to the record for the analog object. For the analog object, I used the finding aid URI as standin for item-level analog URI. See also model for the analog form at esther-lawton-interview-cassette.json
 ---
