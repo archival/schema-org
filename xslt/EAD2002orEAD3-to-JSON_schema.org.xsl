@@ -21,10 +21,9 @@
         (but need to continue to make sure ead3 files can work w/o any other changes / right now, i'm focusing on EAD2002).
         
         also need to make the first attempt at adding:
+            isPartOf (and that's why i've added the isPartOf-URI-prefix parameter)
             start and end dates
             extents
-            @authfilenumber (when it starts with http)
-            isPartOf
             etc.
             
         to have useful links and the like, the ASpace EAD exporter would need to be updated.
@@ -42,6 +41,7 @@
     <xsl:param name="jeckyll-title"/>
     <xsl:param name="jeckyll-source"/>
     <xsl:param name="jeckyll-description"/>
+    <xsl:param name="isPartOf-URI-prefix"/>
     
     <xsl:variable name="collection-ID" select="ead:ead/ead:eadheader/ead:eadid, ead3:ead/ead3:control/ead3:recordid"/>
     <xsl:variable name="collection-ID-text" select="$collection-ID/normalize-space()"/>
@@ -249,15 +249,19 @@ description: <xsl:value-of select="$jeckyll-description"/>
                 <!-- update the origination and controlaccess sections to use authfilenumber attribute-->
                 <xsl:if test="ead:did/ead:origination[not(@audience='internal')]">
                     <j:array key="creator">
-                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')]" mode="string"/>
+                        <!-- process any persname, corpname, famname, or name elements as a map -->
+                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')]/*"/>
+                        <!-- process text-only origination elements as a string-->
+                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')][not(*)]" mode="string"/>
                     </j:array>
                 </xsl:if>
-                <!-- only expects one control access section right now, although EAD can have more than that -->
+                <!-- this doesn't expect nested control access statements right now, although EAD can have those (but ASpace-produced EAD files never will) -->
                 <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]">
                        <j:array key="about">
-                           <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]" mode="string"/>
+                           <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]"/>
                        </j:array>
                 </xsl:if>
+                <!-- not sure how best to handle the genreform elements right now, so at this point i'm just putting them as text in a "genre" array -->
                 <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]">
                     <j:array key="genre">
                         <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]" mode="string"/>
@@ -406,6 +410,39 @@ description: <xsl:value-of select="$jeckyll-description"/>
         <xsl:if test="not(ends-with(normalize-space(.), ':'))">
             <xsl:text>: </xsl:text>
         </xsl:if>
+    </xsl:template>
+    
+    <!-- not using schema.genre since ead:genreform will contain terms that don't fit the genre definition (unsure how to handle these, though, so right now they're only added as text)
+    should "function" be mapped to schema.BusinessFunction? -->
+    <xsl:template match="ead:persname | ead:corpname | ead:famname | ead:name |
+         ead:function | ead:geogname | ead:occupation | ead:subject | ead:title">
+        <j:map>
+            <xsl:choose>
+                <xsl:when test="local-name(.) eq 'persname'">
+                    <j:string key="@type">Person</j:string>
+                </xsl:when>
+                <xsl:when test="local-name(.) eq 'corpname'">
+                    <j:string key="@type">Organization</j:string>
+                </xsl:when>
+                <xsl:when test="local-name(.) eq 'geogname'">
+                    <j:string key="@type">Place</j:string>
+                </xsl:when>
+                <xsl:when test="local-name(.) eq 'title'">
+                    <j:string key="@type">CreativeWork</j:string>
+                </xsl:when>
+                <xsl:when test="local-name(.) = ('subject', 'occupation')">
+                    <j:string key="@type">Intangible</j:string>
+                </xsl:when>
+            </xsl:choose>
+            <j:string key="name">
+                <xsl:value-of select="normalize-space()"/>
+            </j:string>
+            <xsl:if test="starts-with(normalize-space(@authfilenumber), 'http')">
+                <j:string key="@id">
+                    <xsl:value-of select="normalize-space(@authfilenumber)"/>
+                </j:string>
+            </xsl:if>
+        </j:map>
     </xsl:template>
     
     <xsl:template match="text()">
