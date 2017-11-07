@@ -99,7 +99,11 @@
             by default this is turned off for testing purposes
             -->
             <xsl:if test="$include-dsc-in-transformation eq true()">
-                <xsl:apply-templates select="ead:dsc/ead:*[ead:did][not(@audience='internal')] | ead3:dsc/ead3:*[ead3:did][not(@audience='internal')]"/>
+                <!-- update this to go through everything, not just top-level components -->
+                <xsl:apply-templates select="ead:dsc/ead:*[ead:did][not(@audience='internal')] | ead3:dsc/ead3:*[ead3:did][not(@audience='internal')]
+                    | ead:*[ead:did][not(@audience='internal')]
+                    | ead3:*[ead3:did][not(@audience='internal')]
+                    "/>
             </xsl:if>
         </xsl:result-document>
     </xsl:template>
@@ -249,22 +253,22 @@ description: <xsl:value-of select="$jeckyll-description"/>
                 <!-- update the origination and controlaccess sections to use authfilenumber attribute-->
                 <xsl:if test="ead:did/ead:origination[not(@audience='internal')]">
                     <j:array key="creator">
-                        <!-- process any persname, corpname, famname, or name elements as a map -->
-                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')]/*"/>
+                        <!-- process any persname, corpname, famname, or name elements as a map.-->
+                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')]/*" mode="map"/>
                         <!-- process text-only origination elements as a string-->
                         <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')][not(*)]" mode="string"/>
                     </j:array>
                 </xsl:if>
                 <!-- this doesn't expect nested control access statements right now, although EAD can have those (but ASpace-produced EAD files never will) -->
-                <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]">
+                <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('persname', 'corpname', 'famname', 'name', 'function', 'geogname', 'occupation', 'subject', 'title')]">
                        <j:array key="about">
-                           <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() != ('head', 'genreform')]"/>
+                           <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('persname', 'corpname', 'famname', 'name', 'function', 'geogname', 'occupation', 'subject', 'title')]" mode="map"/>
                        </j:array>
                 </xsl:if>
                 <!-- not sure how best to handle the genreform elements right now, so at this point i'm just putting them as text in a "genre" array -->
                 <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]">
                     <j:array key="genre">
-                        <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]" mode="string"/>
+                         <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() eq 'genreform']" mode="map"/>
                     </j:array>
                 </xsl:if>
                 
@@ -413,37 +417,66 @@ description: <xsl:value-of select="$jeckyll-description"/>
     </xsl:template>
     
     <!-- not using schema.genre since ead:genreform will contain terms that don't fit the genre definition (unsure how to handle these, though, so right now they're only added as text)
-    should "function" be mapped to schema.BusinessFunction? -->
+    should "function" be mapped to schema.BusinessFunction?
+    title removed for now.
+    added the "map" mode so that these elements won't be processed when encountered as mixed-content elsewhere, e.g. scopeconent/p/persname.
+    however, since this can still produce a string output, I'm not really happy with the mode name. should update that at some point
+    to be more clear.
+    -->
     <xsl:template match="ead:persname | ead:corpname | ead:famname | ead:name |
-         ead:function | ead:geogname | ead:occupation | ead:subject | ead:title">
-        <j:map>
-            <xsl:choose>
-                <xsl:when test="local-name(.) eq 'persname'">
-                    <j:string key="@type">Person</j:string>
-                </xsl:when>
-                <xsl:when test="local-name(.) eq 'corpname'">
-                    <j:string key="@type">Organization</j:string>
-                </xsl:when>
-                <xsl:when test="local-name(.) eq 'geogname'">
-                    <j:string key="@type">Place</j:string>
-                </xsl:when>
-                <xsl:when test="local-name(.) eq 'title'">
-                    <j:string key="@type">CreativeWork</j:string>
-                </xsl:when>
-                <xsl:when test="local-name(.) = ('subject', 'occupation')">
-                    <j:string key="@type">Intangible</j:string>
-                </xsl:when>
-            </xsl:choose>
-            <j:string key="name">
-                <xsl:value-of select="normalize-space()"/>
-            </j:string>
-            <xsl:if test="starts-with(normalize-space(@authfilenumber), 'http')">
-                <j:string key="@id">
-                    <xsl:value-of select="normalize-space(@authfilenumber)"/>
-                </j:string>
-            </xsl:if>
-        </j:map>
+         ead:function | ead:geogname | ead:occupation | ead:subject | ead:genreform" mode="map">
+        <xsl:choose>
+            <xsl:when test="self::*/local-name() = ('famname', 'name', 'function', 'genreform')">
+                <xsl:choose>
+                    <xsl:when test="starts-with(@authfilenumber, 'http')">
+                        <j:map>
+                            <j:string key="name">
+                                <xsl:value-of select="normalize-space()"/>
+                            </j:string>
+                            <j:string key="@id">
+                                <xsl:value-of select="normalize-space(@authfilenumber)"/>
+                            </j:string>
+                        </j:map>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <j:string>
+                            <xsl:apply-templates/>
+                        </j:string>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <j:map>
+                    <xsl:choose>
+                        <xsl:when test="local-name(.) eq 'persname'">
+                            <j:string key="@type">Person</j:string>
+                        </xsl:when>
+                        <xsl:when test="local-name(.) eq 'corpname'">
+                            <j:string key="@type">Organization</j:string>
+                        </xsl:when>
+                        <xsl:when test="local-name(.) eq 'geogname'">
+                            <j:string key="@type">Place</j:string>
+                        </xsl:when>
+                        <xsl:when test="local-name(.) eq 'title'">
+                            <j:string key="@type">CreativeWork</j:string>
+                        </xsl:when>
+                        <xsl:when test="local-name(.) = ('subject', 'occupation')">
+                            <j:string key="@type">Intangible</j:string>
+                        </xsl:when>
+                    </xsl:choose>
+                    <j:string key="name">
+                        <xsl:value-of select="normalize-space()"/>
+                    </j:string>
+                    <xsl:if test="starts-with(normalize-space(@authfilenumber), 'http')">
+                        <j:string key="@id">
+                            <xsl:value-of select="normalize-space(@authfilenumber)"/>
+                        </j:string>
+                    </xsl:if>
+                </j:map>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
+    
     
     <xsl:template match="text()">
         <xsl:value-of select="normalize-space()"/>
