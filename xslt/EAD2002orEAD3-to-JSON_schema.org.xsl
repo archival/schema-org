@@ -424,7 +424,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
     to be more clear.
     -->
     <xsl:template match="ead:persname | ead:corpname | ead:famname | ead:name |
-         ead:function | ead:geogname | ead:occupation | ead:subject | ead:genreform" mode="map">
+         ead:function | ead:geogname | ead:occupation | ead:subject | ead:genreform | ead:title" mode="map">
         <xsl:choose>
             <xsl:when test="self::*/local-name() = ('famname', 'name', 'function', 'genreform')">
                 <xsl:choose>
