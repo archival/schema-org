@@ -21,12 +21,12 @@
         (but need to continue to make sure ead3 files can work w/o any other changes / right now, i'm focusing on EAD2002).
         
         also need to make the first attempt at adding:
-            isPartOf (and that's why i've added the isPartOf-URI-prefix parameter)
-            start and end dates
-            extents
+            isPartOf (added the first pass at this, but that should be tested and cleaned up)
+            start and end dates (plus EAD3 varients)
+            extents (especially physdescstructured with EAD3, but also @units in EAD2002)
             etc.
             
-        to have useful links and the like, the ASpace EAD exporter would need to be updated.
+        to have useful links and the like, the ASpace EAD exporter would need to be updated (one idea: add database ID values to @altrender attribute in core code or plugin)
         but a few of those things could be mapped here (e.g. eng -> http://id.loc.gov/vocabulary/languages/eng), as well.
     -->
     
@@ -61,7 +61,7 @@
             then $collection-ID-text || '-' || @id => normalize-space() => replace('aspace_', '')
             else $collection-ID-text || '-' || generate-id(.)"/>
         <xsl:variable name="component-name">
-            <xsl:sequence select="ead:did/ead:unittitle[not(@audience='internal')]/string-join(., '; '), ead3:did/ead3:unittitle[not(@audience='internal')]/string-join(., '; ')"/>
+            <xsl:sequence select="ead:did/ead:unittitle[not(@audience='internal')]/string-join(normalize-space(.), '; '), ead3:did/ead3:unittitle[not(@audience='internal')]/string-join(normalize-space(.), '; ')"/>
         </xsl:variable>
         <xsl:variable name="filename">
             <xsl:choose>
@@ -99,7 +99,6 @@
             by default this is turned off for testing purposes
             -->
             <xsl:if test="$include-dsc-in-transformation eq true()">
-                <!-- update this to go through everything, not just top-level components -->
                 <xsl:apply-templates select="ead:dsc/ead:*[ead:did][not(@audience='internal')] | ead3:dsc/ead3:*[ead3:did][not(@audience='internal')]
                     | ead:*[ead:did][not(@audience='internal')]
                     | ead3:*[ead3:did][not(@audience='internal')]
@@ -127,11 +126,28 @@ description: <xsl:value-of select="$jeckyll-description"/>
         <xsl:param name="component-name"/>
         <xsl:param name="archdesc-level"/>
         <xsl:param name="component-ID"/>
-        <!-- check to see if this works for EAD3, too (as i still need to do everywhere else) -->
+        <!-- check to see if this works for EAD3, too (as i still need to do everywhere else!) -->
         <xsl:variable name="level-of-description" select="@level => lower-case() => normalize-space()"/>
         <xsl:variable name="EAD-unitid">
             <xsl:sequence select="ead:did/ead:unitid[not(@audience='internal')]/string-join(., '; '), ead3:did/ead3:unittid[not(@audience='internal')]/string-join(., '; ')"/>
         </xsl:variable>
+        <xsl:variable name="parent-component-ID" select="if (parent::*:dsc and ancestor::*:archdesc/@id) 
+            then ancestor::*:archdesc/@id => normalize-space() => replace('aspace_', '')
+            else if (parent::*:dsc) then ancestor::*:archdesc/generate-id()
+            else if (parent::*/@id) then parent::*/@id => normalize-space() => replace('aspace_', '')
+            else parent::*/generate-id()
+            "/>
+        <!-- this is messy right now, but the idea is that top-level components would be partOf the collection-URL.
+            if a lower-level component has an @altrender attribute, we're assuming that someone has put in a PUI URI fragement into that value, and that becomes the partOf value.
+            but if there's no @altrender attribute, then the best we're doing right now is using the filename, minus the file extension, for the isPartOf value-->
+        <xsl:variable name="isPartOf-string" 
+            select="if (parent::*:dsc and $collection-URL != '') 
+            then $collection-URL
+            else if (parent::*:dsc and ancestor::*:archdesc/@altrender) 
+            then $isPartOf-URI-prefix || ancestor::*:archdesc/@altrender
+            else if (ancestor::*:dsc and parent::*/@altrender)
+            then $isPartOf-URI-prefix || parent::*/@altrender
+            else $parent-component-ID"/>
             <j:map>
                 <j:string key="@context">http://schema.org/</j:string>
                 <xsl:choose>
@@ -146,7 +162,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 <xsl:choose>
-                    <xsl:when test="$collection-URL">
+                    <xsl:when test="self::*:archdesc and $collection-URL">
                         <j:string key="@id">
                             <xsl:value-of select="$collection-URL"/>
                         </j:string>
@@ -156,6 +172,14 @@ description: <xsl:value-of select="$jeckyll-description"/>
                             <xsl:value-of select="$component-ID"/>
                         </j:string>
                     </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="ancestor::*:dsc">
+                        <j:string key="isPartOf">
+                            <xsl:value-of select="$isPartOf-string"/>
+                        </j:string>
+                    </xsl:when>
+                    <xsl:otherwise/>
                 </xsl:choose>
                 <xsl:choose>
                     <xsl:when test="$component-name">
@@ -168,7 +192,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 <xsl:choose>
-                    <xsl:when test="$EAD-unitid">
+                    <xsl:when test="$EAD-unitid != ''">
                         <j:string key="identifier">
                             <xsl:value-of select="$EAD-unitid"/>
                         </j:string>
@@ -418,7 +442,6 @@ description: <xsl:value-of select="$jeckyll-description"/>
     
     <!-- not using schema.genre since ead:genreform will contain terms that don't fit the genre definition (unsure how to handle these, though, so right now they're only added as text)
     should "function" be mapped to schema.BusinessFunction?
-    title removed for now.
     added the "map" mode so that these elements won't be processed when encountered as mixed-content elsewhere, e.g. scopeconent/p/persname.
     however, since this can still produce a string output, I'm not really happy with the mode name. should update that at some point
     to be more clear.
