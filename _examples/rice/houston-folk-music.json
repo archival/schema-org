@@ -3,11 +3,17 @@ title: Houston Folk Music collection
 source: Rice University
 ---
 {
+  "@id": "http://archives.library.rice.edu/repositories/2/resources/1038",
+  "url": "http://archives.library.rice.edu/repositories/2/resources/1038",
   "@context": "http://schema.org/",
-  "@type": "ArchiveCollection",
+  "@type": ["Collection", "ArchiveComponent"],
   "name": "Houston Folk Music collection",
-  "itemLocation": "http://archives.library.rice.edu/repositories/2/resources/1038",
   "inLanguage": "EN",
+  "holdingArchive": {
+    "name": "Woodson Research Center Special Collections & Archives",
+    "address": "Fondren Library, Rice University, 6100 Main, Houston, TX 77005",
+    "url": "http://library.rice.edu/woodson/"
+  },
   "creator": [
     {
       "@type": "person",
