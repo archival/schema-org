@@ -1,0 +1,26 @@
+---
+title: United Mine Workers of America, Safety Division records
+source: Pennsylvania State University
+description: Modeling a basic collection. Choice primarily had to do with how I wanted to put in URIs here for subjects. I ended up choosing to represent the lowest level of faceted subject for which a URI exists. I don't know if that's the best decision or not, that's partly thinking about local needs and what we'd like to do.
+---
+{
+  "@context" : "http://schema.org",
+  "@id" : "https://libraries.psu.edu/findingaids/1824.htm",
+  "@type" : ["Collection", "ArchiveComponent"],
+  "name" : "United Mine Workers of America, Safety Division records",
+  "creator" : {
+    "@type" : "Organization",
+    "@id" : "http://id.loc.gov/authorities/names/no2011137029"
+  },
+  "about" :
+  [ "http://id.loc.gov/authorities/subjects/sh2010101888",
+    "http://id.loc.gov/authorities/subjects/sh85085560",
+    "http://id.loc.gov/authorities/subjects/sh85136642",
+  "http://id.loc.gov/authorities/subjects/sh85085603"],
+  "language" : "http://id.loc.gov/vocabulary/languages/eng",
+  "temporalCoverage" : "1924/1988",
+  "accessConditions" : ["Collection is open for research. Records less than 20 years old shall be made accessible only with the written permission of the designated representative of the donor.",
+    "Copyright is retained by the creators of items in these papers, or their descendants, as stipulated by United States copyright law."],
+    "description" : ["The United Mine Workers of America (UMW) formed in 1890. The overriding concerns of the organization were fair wages and safety for miners. Although in its first half century the union made considerable progress in enforcing safety rules and established the union mine as a consistently safer workplace than the non-union mine, it was only after World War II that advocacy for mine safety was formalized with the establishment of a UMW Safety Division. The Federal Mine Safety Code for Bituminous Coal and Lignite Mines went into effect on 24 July 1946. The Bituminous Wage Agreement of 7 July 1947, provided for a Joint Industry Safety Committee to administrate adherence to that Code and to institute amendments to the Code. C. F. Davis became director of the newly formed United Mine Workers (UMW) Safety Division on 1 June 1947. Central to the mission of the Division was the establishment of a training program for safety committeemen and miners, aimed at accident prevention, as well as the establishment of mine-rescue team competitions. Charles Ferguson became acting director on 21 January 1952, when Davis was incapacitated by illness. Ferguson was appointed director in 1954. Prior to mid-1963, the Safety Division generated a card index of information on American mines, presumably to record compliance or noncompliance with health and safety rules. These index cards were then copied, and the copies filed in the Contract Department. In a memo of 11 June 1963, from UMW president William A. Boyle to Ferguson, Boyle discontinued this redundancy for the sake of time-saving and efficiency. Thereafter the Contract Department maintained the sole card files. Because it is impossible to distinguish, retrospectively, which runs of index cards might have come directly from the Safety Division and which were generated within the Contract Department, all of these cards have been archived within the UMW Department of Contract Services Records. Lewis E. Evans was appointed director upon Ferguson's retirement on 1 June 1968. Evans retired on 20 September 1971. Leonard J. Pnakovich became acting director in February 1972, during his transition from president of District 31 to UMW vice-president. On 16 October 1972, Kenneth F. Wells was appointed director. In 1973, as a component of an overhaul of the UMW organizational structure under President Arnold Miller, the Safety Division was expanded to include more regional inspectors, as well as an engineer and a lawyer devoted solely to safety issues.","This collection documents one of the overriding objectives of the union: safety for miners. An alphabetical run of subject files and correspondence concerns health and safety regulations, reports, contractual agreements, petitions for modifications of mandated safety standards, and training programs. A reference library includes reports and publications on workmen’s compensation and on health and safety hazards associated with coal mining, including black lung disease, potentially dangerous chemicals, high levels of noise, workmen’s compensation, and other issues. Also in the reference library are transcripts from hearings on mine disasters, and a run of the Mine and Safety Reporter newsletter. There are photographic slides and seven 16-mm films, all used for training programs."],
+  "holdingArchive" : "http://libraries.psu.edu/specialcollections"
+}
