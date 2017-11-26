@@ -15,16 +15,27 @@
     -->
     
     <!-- to do:
-        a lot!
         
         so far, just the generic framework is provided 
-        (but need to continue to make sure ead3 files can work w/o any other changes / right now, i'm focusing on EAD2002).
+        (but need to continue to make sure ead3 files can work w/o any other changes.
+        right now, i'm focusing on EAD2002, but ead3 should work, as well, since i've removed the ead2002 namespace
+        from a lot of the templates for the time being).
+        
+        re: ead3 support, it looks like the current ASpace EAD3 exporter includes the "recordid" at ead/control/filedesc/publicationstmt/num
+        instead of ead/control/recordid.  because of that, right now the identifier will result in a "null" value when converting an ASpace EAD3 
+        file to JSON. 
+        it would be esay to add a backup value when the recordid is empty, but i'm not sure how many options we'd want/need to provide there.
+        ead3 requires recordid, but it can be empty altogether.  since that's one of the few required elements, though,
+        i'm not sure that having a backup value makes sense.
         
         also need to make the first attempt at adding:
             isPartOf (added the first pass at this, but that should be tested and cleaned up)
-            start and end dates (plus EAD3 varients)
+            start and end dates (plus EAD3 variants)
             extents (especially physdescstructured with EAD3, but also @units in EAD2002)
             etc.
+            
+        need to decide on how to map holdingArcive info (repository, which would be accurate, but rarely contains much info aside from the name,
+        or publisher, which is less accurate, but would include more info from an ASpace EAD export... aside from the corpname URI, which seems most important.)
             
         to have useful links and the like, the ASpace EAD exporter would need to be updated (one idea: add database ID values to @altrender attribute in core code or plugin)
         but a few of those things could be mapped here (e.g. eng -> http://id.loc.gov/vocabulary/languages/eng), as well.
@@ -212,6 +223,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
                                 <xsl:value-of select="$repository-name"/>
                             </j:string>
                             <!-- add id via authfilenumber after updating the repository-name variable -->
+                            <!-- or consider adding address information from the publication statement element -->
                         </j:map>
                     </xsl:when>
                     <xsl:otherwise>
@@ -219,24 +231,24 @@ description: <xsl:value-of select="$jeckyll-description"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 <xsl:choose>
-                    <xsl:when test="not(ead:scopecontent[normalize-space()]) and ead:abstract[normalize-space()][not(@audience='internal')][2]">
+                    <xsl:when test="not(*:scopecontent[normalize-space()]) and *:abstract[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="description">
-                            <xsl:apply-templates select="ead:did/ead:abstract[not(@audience='internal')]" mode="string"/>
+                            <xsl:apply-templates select="*:did/*:abstract[not(@audience='internal')]" mode="string"/>
                         </j:array>
                     </xsl:when>
-                    <xsl:when test="not(ead:scopecontent[normalize-space()]) and ead:abstract[normalize-space()][not(@audience='internal')]">
+                    <xsl:when test="not(*:scopecontent[normalize-space()]) and *:abstract[normalize-space()][not(@audience='internal')]">
                         <j:string key="description">
-                            <xsl:apply-templates select="ead:did/ead:abstract[not(@audience='internal')]"/>
+                            <xsl:apply-templates select="*:did/*:abstract[not(@audience='internal')]"/>
                         </j:string>
                     </xsl:when>
-                    <xsl:when test="ead:scopecontent[normalize-space()][not(@audience='internal')][2]">
+                    <xsl:when test="*:scopecontent[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="description">
-                            <xsl:apply-templates select="ead:scopecontent[not(@audience='internal')]" mode="string"/>
+                            <xsl:apply-templates select="*:scopecontent[not(@audience='internal')]" mode="string"/>
                         </j:array>
                     </xsl:when>
-                    <xsl:when test="ead:scopecontent[normalize-space()][not(@audience='internal')]">
+                    <xsl:when test="*:scopecontent[normalize-space()][not(@audience='internal')]">
                         <j:string key="description">
-                            <xsl:apply-templates select="ead:scopecontent[not(@audience='internal')]"/>
+                            <xsl:apply-templates select="*:scopecontent[not(@audience='internal')]"/>
                         </j:string>
                     </xsl:when>
                     <xsl:otherwise>
@@ -244,14 +256,14 @@ description: <xsl:value-of select="$jeckyll-description"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 <xsl:choose>
-                    <xsl:when test="ead:accessrestrict[normalize-space()][not(@audience='internal')][2]">
+                    <xsl:when test="*:accessrestrict[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="accessConditions">
-                            <xsl:apply-templates select="ead:accessrestrict[not(@audience='internal')]" mode="string"/>
+                            <xsl:apply-templates select="*:accessrestrict[not(@audience='internal')]" mode="string"/>
                         </j:array>
                     </xsl:when>
-                    <xsl:when test="ead:accessrestrict[normalize-space()][not(@audience='internal')]">
+                    <xsl:when test="*:accessrestrict[normalize-space()][not(@audience='internal')]">
                         <j:string key="accessConditions">
-                            <xsl:apply-templates select="ead:accessrestrict[not(@audience='internal')]"/>
+                            <xsl:apply-templates select="*:accessrestrict[not(@audience='internal')]"/>
                         </j:string>
                     </xsl:when>
                     <xsl:otherwise>
@@ -260,14 +272,14 @@ description: <xsl:value-of select="$jeckyll-description"/>
                 </xsl:choose>
                 <!-- update to map language codes to URIs-->
                 <xsl:choose>
-                    <xsl:when test="ead:did/ead:langmaterial[normalize-space()][not(@audience='internal')][2]">
+                    <xsl:when test="*:did/*:langmaterial[normalize-space()][not(@audience='internal')][2]">
                         <j:array key="language">
-                            <xsl:apply-templates select="ead:did/ead:langmaterial[not(@audience='internal')]" mode="string"/>
+                            <xsl:apply-templates select="*:did/*:langmaterial[not(@audience='internal')]" mode="string"/>
                         </j:array>
                     </xsl:when>
-                    <xsl:when test="ead:did/ead:langmaterial[normalize-space()][not(@audience='internal')]">
+                    <xsl:when test="*:did/*:langmaterial[normalize-space()][not(@audience='internal')]">
                         <j:string key="language">
-                            <xsl:apply-templates select="ead:did/ead:langmaterial[not(@audience='internal')]"/>
+                            <xsl:apply-templates select="*:did/*:langmaterial[not(@audience='internal')]"/>
                         </j:string>
                     </xsl:when>
                     <xsl:otherwise>
@@ -275,38 +287,38 @@ description: <xsl:value-of select="$jeckyll-description"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 <!-- update the origination and controlaccess sections to use authfilenumber attribute-->
-                <xsl:if test="ead:did/ead:origination[not(@audience='internal')]">
+                <xsl:if test="*:did/*:origination[not(@audience='internal')]">
                     <j:array key="creator">
                         <!-- process any persname, corpname, famname, or name elements as a map.-->
-                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')]/*" mode="map"/>
+                        <xsl:apply-templates select="*:did/*:origination[not(@audience='internal')]/*" mode="map"/>
                         <!-- process text-only origination elements as a string-->
-                        <xsl:apply-templates select="ead:did/ead:origination[not(@audience='internal')][not(*)]" mode="string"/>
+                        <xsl:apply-templates select="*:did/*:origination[not(@audience='internal')][not(*)]" mode="string"/>
                     </j:array>
                 </xsl:if>
                 <!-- this doesn't expect nested control access statements right now, although EAD can have those (but ASpace-produced EAD files never will) -->
-                <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('persname', 'corpname', 'famname', 'name', 'function', 'geogname', 'occupation', 'subject', 'title')]">
+                <xsl:if test="*:controlaccess[not(@audience='internal')]/*[local-name() = ('persname', 'corpname', 'famname', 'name', 'function', 'geogname', 'occupation', 'subject', 'title')]">
                        <j:array key="about">
-                           <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('persname', 'corpname', 'famname', 'name', 'function', 'geogname', 'occupation', 'subject', 'title')]" mode="map"/>
+                           <xsl:apply-templates select="*:controlaccess[not(@audience='internal')]/*[local-name() = ('persname', 'corpname', 'famname', 'name', 'function', 'geogname', 'occupation', 'subject', 'title')]" mode="map"/>
                        </j:array>
                 </xsl:if>
                 <!-- not sure how best to handle the genreform elements right now, so at this point i'm just putting them as text in a "genre" array -->
-                <xsl:if test="ead:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]">
+                <xsl:if test="*:controlaccess[not(@audience='internal')]/*[local-name() = ('genreform')]">
                     <j:array key="genre">
-                         <xsl:apply-templates select="ead:controlaccess[not(@audience='internal')]/*[local-name() eq 'genreform']" mode="map"/>
+                         <xsl:apply-templates select="*:controlaccess[not(@audience='internal')]/*[local-name() eq 'genreform']" mode="map"/>
                     </j:array>
                 </xsl:if>
                 
                 <!-- dateCreated, first pass -->
-                <xsl:if test="ead:did/ead:unitdate[not(@type='bulk')]">
+                <xsl:if test="*:did/*:unitdate[not(@type='bulk')]">
                     <xsl:choose>
-                        <xsl:when test="ead:did/ead:unitdate[not(@type='bulk')][2]">
+                        <xsl:when test="*:did/*:unitdate[not(@type='bulk')][2]">
                             <j:array key="dateCreated">
-                                <xsl:apply-templates select="ead:did/ead:unitdate[not(@type='bulk')]" mode="string"/>
+                                <xsl:apply-templates select="*:did/*:unitdate[not(@type='bulk')]" mode="string"/>
                             </j:array>
                         </xsl:when>
                         <xsl:otherwise>
                             <j:string key="dateCreated">
-                                <xsl:apply-templates select="ead:did/ead:unitdate[not(@type='bulk')]"/>
+                                <xsl:apply-templates select="*:did/*:unitdate[not(@type='bulk')]"/>
                             </j:string>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -329,16 +341,16 @@ description: <xsl:value-of select="$jeckyll-description"/>
                     "value": "14"
                     }
                 -->
-                <xsl:if test="ead:did/ead:physdesc[not(ead:extent/@unit)]">
+                <xsl:if test="*:did/*:physdesc[not(*:extent/@unit)]">
                     <xsl:choose>
-                        <xsl:when test="ead:did/ead:physdesc[not(ead:extent/@unit)][2]">
+                        <xsl:when test="*:did/*:physdesc[not(*:extent/@unit)][2]">
                             <j:array key="materialExtent">
-                                <xsl:apply-templates select="ead:did/ead:physdesc[not(ead:extent/@unit)]" mode="string"/>
+                                <xsl:apply-templates select="*:did/*:physdesc[not(*:extent/@unit)]" mode="string"/>
                             </j:array>
                         </xsl:when>
                         <xsl:otherwise>
                             <j:string key="materialExtent">
-                                <xsl:apply-templates select="ead:did/ead:physdesc[not(ead:extent/@unit)]"/>
+                                <xsl:apply-templates select="*:did/*:physdesc[not(*:extent/@unit)]"/>
                             </j:string>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -358,7 +370,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
         </j:string>
     </xsl:template>
     
-    <!--optimized for what ASpace can output (up to 2 extents only).  If these templates are not used with AS-produced EAD, they
+    <!--optimized for what ASpace can output (up to 2 extents only), when using EAD2002.  If these templates are not used with AS-produced EAD, they
     will definitely need to change!-->
     <xsl:template match="ead:extent[1][matches(., '^\d')]">
            <!--ASpace doesn't force the extent number to be a number, so we'll need to validate and test this on our own-->
@@ -410,9 +422,9 @@ description: <xsl:value-of select="$jeckyll-description"/>
             </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="ead:physfacet">
+    <xsl:template match="*:physfacet">
             <xsl:choose>
-                <xsl:when test="preceding-sibling::ead:extent">
+                <xsl:when test="preceding-sibling::*:extent">
                     <xsl:text> : </xsl:text>
                     <xsl:apply-templates/>
                 </xsl:when>
@@ -421,9 +433,9 @@ description: <xsl:value-of select="$jeckyll-description"/>
                 </xsl:otherwise>
             </xsl:choose>
     </xsl:template>
-    <xsl:template match="ead:dimensions">
+    <xsl:template match="*:dimensions">
             <xsl:choose>
-                <xsl:when test="preceding-sibling::ead:extent | preceding-sibling::ead:physfacet">
+                <xsl:when test="preceding-sibling::*:extent | preceding-sibling::*:physfacet">
                     <xsl:text> ; </xsl:text>
                     <xsl:apply-templates/>
                 </xsl:when>
@@ -433,7 +445,7 @@ description: <xsl:value-of select="$jeckyll-description"/>
             </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="ead:head">
+    <xsl:template match="*:head">
         <xsl:apply-templates/>
         <xsl:if test="not(ends-with(normalize-space(.), ':'))">
             <xsl:text>: </xsl:text>
@@ -446,8 +458,8 @@ description: <xsl:value-of select="$jeckyll-description"/>
     however, since this can still produce a string output, I'm not really happy with the mode name. should update that at some point
     to be more clear.
     -->
-    <xsl:template match="ead:persname | ead:corpname | ead:famname | ead:name |
-         ead:function | ead:geogname | ead:occupation | ead:subject | ead:genreform | ead:title" mode="map">
+    <xsl:template match="*:persname | *:corpname | *:famname | *:name |
+         *:function | *:geogname | *:occupation | *:subject | *:genreform | *:title" mode="map">
         <xsl:choose>
             <xsl:when test="self::*/local-name() = ('famname', 'name', 'function', 'genreform')">
                 <xsl:choose>
