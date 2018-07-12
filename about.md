@@ -4,10 +4,14 @@ title: About
 permalink: /about/
 ---
 
-This site provides examples that demonstrate the use of Schema.org and the in-development
-[Schema Architypes extension](https://www.w3.org/community/architypes/wiki/Main_Page)
-for publishing archival description as linked data in a low-barrier manner. To cite this work,
-please reference the following:
+This site provides examples that demonstrate the use of Schema.org and the proposed [Schema Architypes extension](https://www.w3.org/community/architypes/wiki/Main_Page)
+for publishing archival description as linked data in a low-barrier manner.
+
+To track the Schema Architypes proposal, please see
+[this Github issue](https://github.com/schemaorg/schemaorg/pull/1784).
+
+To cite our work to map archival description to Schema.org and Schema
+Architypes, please reference the following:
 
 Matienzo, Mark A., Elizabeth Russey Roke, and Scott Carlson. ["Creating a Linked Data-Friendly Metadata Application Profile for Archival Description."](http://dcevents.dublincore.org/IntConf/dc-2017/paper/view/506) In *Proceedings of the International Conference on Dublin Core and Metadata Applications* 2017, 112-116.
 
