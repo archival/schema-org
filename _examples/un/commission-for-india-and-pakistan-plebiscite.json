@@ -13,7 +13,7 @@ source: United Nations
     "url": "https://archives.un.org/",
     "email": "arms@un.org"
   },
-  "accessAndUse": "No restrictions on access",
+  "accessConditions": "No restrictions on access",
   "creator": {
     "@id": "https://search.archives.un.org/united-nations-commission-for-india-and-pakistan",
     "@type": "Organization",
