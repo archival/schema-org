@@ -1,0 +1,306 @@
+---
+title: Animal Rights Network Records
+source: North Carolina State University Libraries
+description: Example of an archival collection with extensive access terms, with and without associated authority records
+---
+{
+  "@context" : "http://schema.org",
+  "@id" : "https://www.lib.ncsu.edu/findingaids/mc00351",
+  "@type" : ["Collection", "ArchiveComponent"],
+  "name" : "Animal Rights Network Records",
+  "url" : "https://www.lib.ncsu.edu/findingaids/mc00351",
+  "holdingArchive": {
+    "@type" : "Archive",
+    "@id" : "http://id.loc.gov/vocabulary/organizations/ncrhsus",
+    "name": "North Carolina State University Libraries, Special Collections Research Center"
+  },
+  "location" : {
+    "@type": "Place",
+    "name": "D.H. Hill Library",
+    "address": {
+      "@type" : "PostalAddress",
+      "streetAddress" : "2 Broughton Drive",
+      "postOfficeBoxNumber": "Campus Box 7111",
+      "addressLocality": "Raleigh",
+      "addressRegion" : "27695-7111",
+      "postalCode" : "16852"
+    }
+  },
+  "identifier": "MC 00351",
+  "accessConditions": "This collection is open for research; access requires at least 48 hours advance notice.",
+  "temporalCoverage": "1903/2003",
+  "description": "The Animal Rights Network Records contains correspondence, office files, reports, clippings, publications, mailings, and audiovisual resources documenting the activities of the Animal Rights Network in advocating for the ethical and humane treatment of animals.",
+  "inLanguage": "en",
+  "creator" : [
+    {
+      "@type" : "Organization",
+      "@id" : "http://viaf.org/viaf/130265850",
+      "name": "Animal Rights Network"
+    },
+    {
+      "@type" : "Organization",
+      "@id" : "http://viaf.org/viaf/131474412",
+      "name": "Farm Animal Reform Movement, Inc."
+    },
+    {
+      "@type" : "Organization",
+      "@id" : "http://viaf.org/viaf/157183241",
+      "name": "Fund for Animals"
+    },
+    {
+      "@type" : "Organization",
+      "@id" : "http://viaf.org/viaf/151397687",
+      "name": "National Humane Education Society (U.S.)"
+    },
+    {
+      "@type" : "Person",
+      "name": "Eilers, Betty B."
+    },
+    {
+      "@type" : "Person",
+      "name": "Gelhert, Ruth"
+    },
+    {
+      "@type" : "Person",
+      "name": "McMahon, June"
+    },
+    {
+      "@type" : "Person",
+      "name": "Moler, Robin"
+    },
+    {
+      "@type" : "Person",
+      "name": "Wiedman, Susan"
+    }
+  ],
+  "about": [
+    {
+      "@type": "Person",
+      "name": "Feuerstein, Trisha"
+    },
+    {
+      "@type": "Person",
+      "@id": "http://viaf.org/viaf/65810435",
+      "name": "Stallwood, Kim W."
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/132548806",
+      "name": "American Anti-Vivisection Society"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/139482357",
+      "name": "American Society for the Prevention of Cruelty to Animals"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/158390081",
+      "name": "Animal Legal Defense Fund"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/124926677",
+      "name": "Animal Welfare Institute"
+    },
+    {
+      "@type": "Organization",
+      "name": "Animals' Crusaders"
+    },
+    {
+      "@type": "Organization",
+      "name": "Board of the Tennessee Humane Association"
+    },
+    {
+      "@type": "Organization",
+      "name": "Charlottesville Voices for Animals"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/131474412",
+      "name": "Farm Animal Rights Movement"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/126794737",
+      "name": "Friends of Animals"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/145882579",
+      "name": "Humane Education Society (Great Britain)"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/126947738",
+      "name": "Humane Farming Association"
+    },
+    {
+      "@type": "Organization",
+      "name": "Humane Society of Sumner County"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/157101020",
+      "name": "Humane Society of the United States"
+    },
+    {
+      "@type": "Organization",
+      "name": "Institute for Animals and Society"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/151557367",
+      "name": "Last Chance for Animals (Organization)"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/156017123",
+      "name": "People for the Ethical Treatment of Animals"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/126793297",
+      "name": "Physicians Committee for Responsible Medicine"
+    },
+    {
+      "@type": "Organization",
+      "name": "United Action for Animals"
+    },
+    {
+      "@type": "Organization",
+      "@id": "http://viaf.org/viaf/145187266",
+      "name": "World Society for the Protection of Animals (WSPA)"
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "http://viaf.org/viaf/174346364",
+      "name": "Alternatives to laboratory animals"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85005173",
+      "name": "Animal experimentation"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh89005495",
+      "name": "Animal rights"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85005242",
+      "name": "Animal traps -- Law and legislation"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85005275",
+      "name": "Animal welfare -- Law and legislation"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85005276",
+      "name": "Animal welfare -- Societies, etc"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85005283",
+      "name": "Animals in art"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85026086",
+      "name": "Circus animals"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85038770",
+      "name": "Dog racing"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85043044",
+      "name": "Endangered species"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85044184",
+      "name": "Environmental protection -- Law and Legislation"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh2009125121",
+      "name": "Ethics -- Study and teaching"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85077810",
+      "name": "Factory farms"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85052483",
+      "name": "Fur"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85052932",
+      "name": "Game laws"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85062110",
+      "name": "Horse racing"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85063117",
+      "name": "Hunting"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85073746",
+      "name": "Laboratory animals"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85100482",
+      "name": "Pets"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh2011004667",
+      "name": "Philosophy -- Study and teaching"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85106679",
+      "name": "Primates as laboratory animals"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85142520",
+      "name": "Vegetarianism"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85144042",
+      "name": "Vivisection"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh96001788",
+      "name": "Veganism"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85146731",
+      "name": "Wildlife conservation"
+    },
+    {
+      "@type": "Thing",
+      "@id": "http://id.loc.gov/authorities/subjects/sh85149970",
+      "name": "Zoo animals"
+    }
+  ]
+}
