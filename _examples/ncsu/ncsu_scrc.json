@@ -1,0 +1,30 @@
+---
+title: North Carolina State University Libraries, Special Collections Research Center
+source: North Carolina State University Libraries
+description: Data describing an archival repository as an independent division of a larger library organization
+---
+{
+  "@type": "Archive",
+  "@id": "http://id.loc.gov/vocabulary/organizations/ncrhsus",
+  "name": "North Carolina State University Libraries, Special Collections Research Center",
+  "url": "https://www.lib.ncsu.edu/scrc",
+  "parentOrganization" : {
+    "@type": "Library",
+    "@id": "https://www.lib.ncsu.edu/ld/onld/00000658",
+    "name": "North Carolina State University Libraries",
+    "url": "https://www.lib.ncsu.edu"
+  },
+  "location": {
+    "@type": "Place",
+    "name": "D.H. Hill Library",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "2 Broughton Drive",
+      "postOfficeBoxNumber": "Campus Box 7111",
+      "addressLocality": "Raleigh",
+      "addressRegion": "27695-7111",
+      "postalCode": "16852"
+    }
+  },
+  "telephone": "(919) 515-3364"
+}
